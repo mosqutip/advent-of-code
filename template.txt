@@ -1,0 +1,10 @@
+import os
+import types
+
+def method_name() -> int:
+    lines: [str] = []
+
+    input_file_path: str = os.path.join(os.getcwd(), 'day#\\input.txt')
+    with open(input_file_path, 'r') as input_file:
+        for line in input_file.readlines():
+            continue
