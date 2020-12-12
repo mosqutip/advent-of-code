@@ -93,8 +93,8 @@ import types
 def read_input() -> [str]:
     instructions: [str] = []
 
-    input_file_path: str = os.path.join(os.getcwd(), 'day8\\input.txt')
-    with open(input_file_path, 'r') as input_file:
+    input_file_path: str = os.path.join(os.getcwd(), "day8\\input.txt")
+    with open(input_file_path, "r") as input_file:
         for line in input_file.readlines():
             instructions.append(line.strip())
 
@@ -111,14 +111,14 @@ def parse_instructions(instructions: [str]) -> (int, int):
             return accumulator, line_index
 
         visited_lines.add(line_index)
-        command, val = instructions[line_index].split(' ')
+        command, val = instructions[line_index].split(" ")
 
-        if command == 'acc':
+        if command == "acc":
             accumulator += int(val)
             line_index += 1
-        elif command == 'jmp':
+        elif command == "jmp":
             line_index += int(val)
-        elif command == 'nop':
+        elif command == "nop":
             line_index += 1
 
     return accumulator, line_index
@@ -127,19 +127,19 @@ def parse_instructions(instructions: [str]) -> (int, int):
 def switch_instruction(instructions: [str]) -> int:
     end = len(instructions)
 
-    original = ''
+    original = ""
     for i in range(end):
         original: str = instructions[i]
-        command, val = original.split(' ')
+        command, val = original.split(" ")
 
-        if command == 'jmp':
-            command = 'nop'
-        elif command == 'nop':
-            command = 'jmp'
+        if command == "jmp":
+            command = "nop"
+        elif command == "nop":
+            command = "jmp"
         else:
             continue
 
-        instructions[i] = f'{command} {val}'
+        instructions[i] = f"{command} {val}"
         accumulator, line_index = parse_instructions(instructions)
 
         if line_index == end:

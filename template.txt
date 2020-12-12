@@ -1,7 +1,7 @@
 import os
 import types
 
-def method_name() -> int:
+def method_name() -> None:
     lines: [str] = []
 
     input_file_path: str = os.path.join(os.getcwd(), 'day#\\input.txt')
