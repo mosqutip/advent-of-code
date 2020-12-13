@@ -80,8 +80,8 @@ import types
 def count_trees() -> int:
     lines: [str] = []
 
-    input_file_path: str = os.path.join(os.getcwd(), 'day3\\input.txt')
-    with open(input_file_path, 'r') as input_file:
+    input_file_path: str = os.path.join(os.getcwd(), "day3\\input.txt")
+    with open(input_file_path, "r") as input_file:
         for line in input_file.readlines():
             lines.append(line.strip())
 
@@ -94,7 +94,7 @@ def count_trees() -> int:
         while right_index >= line_length:
             right_index -= line_length
 
-        if lines[line_index][right_index] == '#':
+        if lines[line_index][right_index] == "#":
             tree_count += 1
 
         line_index += 1
@@ -106,14 +106,12 @@ def count_trees() -> int:
 def count_multiple_trees() -> int:
     lines: [str] = []
 
-    input_file_path: str = os.path.join(os.getcwd(), 'day3\\input.txt')
-    with open(input_file_path, 'r') as input_file:
+    input_file_path: str = os.path.join(os.getcwd(), "day3\\input.txt")
+    with open(input_file_path, "r") as input_file:
         for line in input_file.readlines():
             lines.append(line.strip())
 
-    indices = [
-        [1, 1, 1, 1], [3, 3, 1, 1], [5, 5, 1, 1], [7, 7, 1, 1], [1, 1, 2, 2]
-    ]
+    indices = [[1, 1, 1, 1], [3, 3, 1, 1], [5, 5, 1, 1], [7, 7, 1, 1], [1, 1, 2, 2]]
     tree_counts = [0] * len(indices)
     lines_processed = 0
     line_length = len(lines[0])
@@ -126,7 +124,7 @@ def count_multiple_trees() -> int:
             while index_set[0] >= line_length:
                 index_set[0] -= line_length
 
-            if lines[index_set[2]][index_set[0]] == '#':
+            if lines[index_set[2]][index_set[0]] == "#":
                 tree_counts[i] += 1
 
             index_set[0] += index_set[1]

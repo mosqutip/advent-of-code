@@ -65,8 +65,8 @@ NUM_COLS: int = 8
 def parse_input() -> [str]:
     lines: str = []
 
-    input_file_path: str = os.path.join(os.getcwd(), 'day5\\input.txt')
-    with open(input_file_path, 'r') as input_file:
+    input_file_path: str = os.path.join(os.getcwd(), "day5\\input.txt")
+    with open(input_file_path, "r") as input_file:
         for line in input_file.readlines():
             lines.append(line.strip())
 
@@ -81,10 +81,10 @@ def binary_search(key: str) -> (int, int):
     high_index: int = NUM_ROWS - 1
     row_index: int = ((high_index - low_index) // 2) + low_index
     for char in key[:7]:
-        if char == 'F':
-            high_index = (row_index - 1)
-        elif char == 'B':
-            low_index = (row_index + 1)
+        if char == "F":
+            high_index = row_index - 1
+        elif char == "B":
+            low_index = row_index + 1
 
         row_index = ((high_index - low_index) // 2) + low_index
 
@@ -94,9 +94,9 @@ def binary_search(key: str) -> (int, int):
     high_index = NUM_COLS - 1
     col_index: int = ((high_index - low_index) // 2) + low_index
     for char in key[7:]:
-        if char == 'L':
+        if char == "L":
             high_index = col_index
-        elif char == 'R':
+        elif char == "R":
             low_index = col_index
 
         col_index = ((high_index - low_index) // 2) + low_index

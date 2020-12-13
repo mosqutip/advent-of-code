@@ -97,8 +97,8 @@ def handle_each_responses(group_responses: [[str]]) -> int:
 
 
 def count_each_yes() -> int:
-    input_file_path: str = os.path.join(os.getcwd(), 'day6\\input.txt')
-    with open(input_file_path, 'r') as input_file:
+    input_file_path: str = os.path.join(os.getcwd(), "day6\\input.txt")
+    with open(input_file_path, "r") as input_file:
         group_responses: [[str]] = []
         unique_responses: int = 0
         for line in input_file.readlines():
@@ -119,15 +119,14 @@ def handle_all_responses(group_responses: [[str]]) -> int:
 
     response_set = set(list(group_responses[0]))
     for individual_responses in group_responses[1:]:
-        response_set = response_set.intersection(
-            set(list(individual_responses)))
+        response_set = response_set.intersection(set(list(individual_responses)))
 
     return len(response_set)
 
 
 def count_all_yes() -> int:
-    input_file_path: str = os.path.join(os.getcwd(), 'day6\\input.txt')
-    with open(input_file_path, 'r') as input_file:
+    input_file_path: str = os.path.join(os.getcwd(), "day6\\input.txt")
+    with open(input_file_path, "r") as input_file:
         group_responses: [[str]] = []
         unanimous_responses: int = 0
         for line in input_file.readlines():

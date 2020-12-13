@@ -1,4 +1,4 @@
-'''
+"""
 --- Day 11: Seating System ---
 Your plane lands with plenty of time to spare. The final leg of your journey is a ferry that goes directly to the tropical island where you can finally start your vacation. As you reach the waiting area to board the ferry, you realize you're so early, nobody else has even arrived yet!
 
@@ -209,7 +209,7 @@ Again, at this point, people stop shifting around and the seating area reaches e
 Given the new visibility method and the rule change for occupied seats becoming empty, once equilibrium is reached, how many seats end up occupied?
 
 Your puzzle answer was 2085.
-'''
+"""
 
 # 4 possible states:
 # X: seat empty, becomes occupied
@@ -224,8 +224,8 @@ import types
 def read_input() -> None:
     grid: [str] = []
 
-    input_file_path: str = os.path.join(os.getcwd(), 'day11\\input.txt')
-    with open(input_file_path, 'r') as input_file:
+    input_file_path: str = os.path.join(os.getcwd(), "day11\\input.txt")
+    with open(input_file_path, "r") as input_file:
         for line in input_file.readlines():
             grid.append(list(line.strip()))
 
@@ -238,18 +238,18 @@ def update_seat(grid: [str], row: int, col: int, current_state: str) -> None:
     high_row: int = min(len(grid) - 1, row + 1)
     high_col: int = min(len(grid[0]) - 1, col + 1)
 
-    occupied_count: int = -1 if current_state == '#' else 0
+    occupied_count: int = -1 if current_state == "#" else 0
     for i in range(low_row, high_row + 1):
         for j in range(low_col, high_col + 1):
-            if grid[i][j] == '#' or grid[i][j] == 'O':
+            if grid[i][j] == "#" or grid[i][j] == "O":
                 occupied_count += 1
 
-    if current_state == '#':
+    if current_state == "#":
         if occupied_count >= 4:
-            grid[row][col] = 'O'
-    if current_state == 'L':
+            grid[row][col] = "O"
+    if current_state == "L":
         if occupied_count == 0:
-            grid[row][col] = 'X'
+            grid[row][col] = "X"
 
 
 def update_all_seats(grid: [str]) -> bool:
@@ -258,7 +258,7 @@ def update_all_seats(grid: [str]) -> bool:
     for i in range(len(grid)):
         for j in range(len(grid[0])):
             current_state: str = grid[i][j]
-            if current_state == '.':
+            if current_state == ".":
                 continue
 
             update_seat(grid, i, j, current_state)
@@ -267,10 +267,10 @@ def update_all_seats(grid: [str]) -> bool:
 
     for i in range(len(grid)):
         for j in range(len(grid[0])):
-            if grid[i][j] == 'X':
-                grid[i][j] = '#'
-            elif grid[i][j] == 'O':
-                grid[i][j] = 'L'
+            if grid[i][j] == "X":
+                grid[i][j] = "#"
+            elif grid[i][j] == "O":
+                grid[i][j] = "L"
             else:
                 continue
 
@@ -279,24 +279,24 @@ def update_all_seats(grid: [str]) -> bool:
 
 def update_seat_directional(grid: [str], row: int, col: int) -> bool:
     for i in range(row + 1, len(grid)):
-        if grid[i][col] == '#' or grid[i][col] == 'O':
+        if grid[i][col] == "#" or grid[i][col] == "O":
             return False
-        if grid[i][col] == 'L' or grid[i][col] == 'X':
+        if grid[i][col] == "L" or grid[i][col] == "X":
             break
     for i in range(row - 1, -1, -1):
-        if grid[i][col] == '#' or grid[i][col] == 'O':
+        if grid[i][col] == "#" or grid[i][col] == "O":
             return False
-        if grid[i][col] == 'L' or grid[i][col] == 'X':
+        if grid[i][col] == "L" or grid[i][col] == "X":
             break
     for j in range(col + 1, len(grid[0])):
-        if grid[row][j] == '#' or grid[row][j] == 'O':
+        if grid[row][j] == "#" or grid[row][j] == "O":
             return False
-        if grid[row][j] == 'L' or grid[row][j] == 'X':
+        if grid[row][j] == "L" or grid[row][j] == "X":
             break
     for j in range(col - 1, -1, -1):
-        if grid[row][j] == '#' or grid[row][j] == 'O':
+        if grid[row][j] == "#" or grid[row][j] == "O":
             return False
-        if grid[row][j] == 'L' or grid[row][j] == 'X':
+        if grid[row][j] == "L" or grid[row][j] == "X":
             break
 
     # Diagonals
@@ -307,15 +307,15 @@ def update_seat_directional(grid: [str], row: int, col: int) -> bool:
             break
 
         if left >= 0:
-            if grid[i][left] == '#' or grid[i][left] == 'O':
+            if grid[i][left] == "#" or grid[i][left] == "O":
                 return False
-            if grid[i][left] == 'L' or grid[i][left] == 'X':
+            if grid[i][left] == "L" or grid[i][left] == "X":
                 left = -1
             left -= 1
         if right < len(grid[i]):
-            if grid[i][right] == '#' or grid[i][right] == 'O':
+            if grid[i][right] == "#" or grid[i][right] == "O":
                 return False
-            if grid[i][right] == 'L' or grid[i][right] == 'X':
+            if grid[i][right] == "L" or grid[i][right] == "X":
                 right = len(grid[i])
             right += 1
 
@@ -326,15 +326,15 @@ def update_seat_directional(grid: [str], row: int, col: int) -> bool:
             break
 
         if left >= 0:
-            if grid[i][left] == '#' or grid[i][left] == 'O':
+            if grid[i][left] == "#" or grid[i][left] == "O":
                 return False
-            if grid[i][left] == 'L' or grid[i][left] == 'X':
+            if grid[i][left] == "L" or grid[i][left] == "X":
                 left = -1
             left -= 1
         if right < len(grid[i]):
-            if grid[i][right] == '#' or grid[i][right] == 'O':
+            if grid[i][right] == "#" or grid[i][right] == "O":
                 return False
-            if grid[i][right] == 'L' or grid[i][right] == 'X':
+            if grid[i][right] == "L" or grid[i][right] == "X":
                 right = len(grid[i])
             right += 1
 
@@ -345,28 +345,28 @@ def vacate_seat_directional(grid: [str], row: int, col: int) -> None:
     occupied_count: int = 0
 
     for i in range(row + 1, len(grid)):
-        if grid[i][col] == '#' or grid[i][col] == 'O':
+        if grid[i][col] == "#" or grid[i][col] == "O":
             occupied_count += 1
             break
-        if grid[i][col] == 'L' or grid[i][col] == 'X':
+        if grid[i][col] == "L" or grid[i][col] == "X":
             break
     for i in range(row - 1, -1, -1):
-        if grid[i][col] == '#' or grid[i][col] == 'O':
+        if grid[i][col] == "#" or grid[i][col] == "O":
             occupied_count += 1
             break
-        if grid[i][col] == 'L' or grid[i][col] == 'X':
+        if grid[i][col] == "L" or grid[i][col] == "X":
             break
     for j in range(col + 1, len(grid[0])):
-        if grid[row][j] == '#' or grid[row][j] == 'O':
+        if grid[row][j] == "#" or grid[row][j] == "O":
             occupied_count += 1
             break
-        if grid[row][j] == 'L' or grid[row][j] == 'X':
+        if grid[row][j] == "L" or grid[row][j] == "X":
             break
     for j in range(col - 1, -1, -1):
-        if grid[row][j] == '#' or grid[row][j] == 'O':
+        if grid[row][j] == "#" or grid[row][j] == "O":
             occupied_count += 1
             break
-        if grid[row][j] == 'L' or grid[row][j] == 'X':
+        if grid[row][j] == "L" or grid[row][j] == "X":
             break
 
     # Diagonals
@@ -377,19 +377,19 @@ def vacate_seat_directional(grid: [str], row: int, col: int) -> None:
             break
 
         if left >= 0:
-            if grid[i][left] == '#' or grid[i][left] == 'O':
+            if grid[i][left] == "#" or grid[i][left] == "O":
                 occupied_count += 1
                 left = -1
         if left >= 0:
-            if grid[i][left] == 'L' or grid[i][left] == 'X':
+            if grid[i][left] == "L" or grid[i][left] == "X":
                 left = -1
             left -= 1
         if right < len(grid[i]):
-            if grid[i][right] == '#' or grid[i][right] == 'O':
+            if grid[i][right] == "#" or grid[i][right] == "O":
                 occupied_count += 1
                 right = len(grid[i])
         if right < len(grid[i]):
-            if grid[i][right] == 'L' or grid[i][right] == 'X':
+            if grid[i][right] == "L" or grid[i][right] == "X":
                 right = len(grid[i])
             right += 1
 
@@ -400,24 +400,24 @@ def vacate_seat_directional(grid: [str], row: int, col: int) -> None:
             break
 
         if left >= 0:
-            if grid[i][left] == '#' or grid[i][left] == 'O':
+            if grid[i][left] == "#" or grid[i][left] == "O":
                 occupied_count += 1
                 left = -1
         if left >= 0:
-            if grid[i][left] == 'L' or grid[i][left] == 'X':
+            if grid[i][left] == "L" or grid[i][left] == "X":
                 left = -1
             left -= 1
         if right < len(grid[i]):
-            if grid[i][right] == '#' or grid[i][right] == 'O':
+            if grid[i][right] == "#" or grid[i][right] == "O":
                 occupied_count += 1
                 right = len(grid[i])
         if right < len(grid[i]):
-            if grid[i][right] == 'L' or grid[i][right] == 'X':
+            if grid[i][right] == "L" or grid[i][right] == "X":
                 right = len(grid[i])
             right += 1
 
     if occupied_count >= 5:
-        grid[row][col] = 'O'
+        grid[row][col] = "O"
 
 
 def update_all_seats_directional(grid: [str]) -> bool:
@@ -426,13 +426,13 @@ def update_all_seats_directional(grid: [str]) -> bool:
     for i in range(len(grid)):
         for j in range(len(grid[0])):
             current_state: str = grid[i][j]
-            if current_state == '.':
+            if current_state == ".":
                 continue
 
-            if current_state == 'L':
+            if current_state == "L":
                 if update_seat_directional(grid, i, j):
-                    grid[i][j] = 'X'
-            elif current_state == '#':
+                    grid[i][j] = "X"
+            elif current_state == "#":
                 vacate_seat_directional(grid, i, j)
 
             if grid[i][j] != current_state:
@@ -440,10 +440,10 @@ def update_all_seats_directional(grid: [str]) -> bool:
 
     for i in range(len(grid)):
         for j in range(len(grid[0])):
-            if grid[i][j] == 'X':
-                grid[i][j] = '#'
-            elif grid[i][j] == 'O':
-                grid[i][j] = 'L'
+            if grid[i][j] == "X":
+                grid[i][j] = "#"
+            elif grid[i][j] == "O":
+                grid[i][j] = "L"
             else:
                 continue
 
@@ -463,11 +463,11 @@ def stabilize(directional: bool = False) -> int:
     occupied_seats: int = 0
     for row in grid:
         for seat in row:
-            if seat == '#':
+            if seat == "#":
                 occupied_seats += 1
 
     return occupied_seats
 
 
-#print(stabilize())
+# print(stabilize())
 print(stabilize(True))

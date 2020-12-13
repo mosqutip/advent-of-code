@@ -38,8 +38,8 @@ target: int = 2020
 def two_sum() -> int:
     entries: set(int) = set()
 
-    input_file_path = os.path.join(os.getcwd(), 'day1\\input.txt')
-    with open(input_file_path, 'r') as input_file:
+    input_file_path = os.path.join(os.getcwd(), "day1\\input.txt")
+    with open(input_file_path, "r") as input_file:
         for line in input_file.readlines():
             num: int = int(line.strip())
             if (target - num) in entries:
@@ -52,8 +52,8 @@ def two_sum() -> int:
 def read_input() -> [int]:
     nums: [int] = []
 
-    input_file_path: str = os.path.join(os.getcwd(), 'day1\\input.txt')
-    with open(input_file_path, 'r') as input_file:
+    input_file_path: str = os.path.join(os.getcwd(), "day1\\input.txt")
+    with open(input_file_path, "r") as input_file:
         for line in input_file.readlines():
             nums.append(int(line.strip()))
 

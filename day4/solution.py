@@ -124,10 +124,7 @@ import re
 import types
 
 
-required_fields: {str} = set({
-    "byr", "iyr", "eyr", "hgt",
-    "hcl", "ecl", "pid"
-})
+required_fields: {str} = set({"byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"})
 
 
 def parse_int(num: str) -> (int, bool):
@@ -143,9 +140,9 @@ def process_passport(passport: {str: str}, validate: bool = False) -> int:
         return 0
 
     if validate:
-        birth_year = parse_int(passport.get('byr'))
-        issue_year = parse_int(passport.get('iyr'))
-        exp_year = parse_int(passport.get('eyr'))
+        birth_year = parse_int(passport.get("byr"))
+        issue_year = parse_int(passport.get("iyr"))
+        exp_year = parse_int(passport.get("eyr"))
 
         if birth_year[1] and (birth_year[0] < 1920 or birth_year[0] > 2002):
             return 0
@@ -154,29 +151,29 @@ def process_passport(passport: {str: str}, validate: bool = False) -> int:
         if exp_year[1] and (exp_year[0] < 2020 or exp_year[0] > 2030):
             return 0
 
-        height_str = passport.get('hgt', '')
+        height_str = passport.get("hgt", "")
         height = parse_int(height_str[:-2])
         height_unit = height_str[-2:]
-        if (height_unit != 'cm' and height_unit != 'in') or not height[1]:
+        if (height_unit != "cm" and height_unit != "in") or not height[1]:
             return 0
-        if height_unit == 'cm' and (height[0] < 150 or height[0] > 193):
+        if height_unit == "cm" and (height[0] < 150 or height[0] > 193):
             return 0
-        if height_unit == 'in' and (height[0] < 59 or height[0] > 76):
-            return 0
-
-        eye_colors = set({'amb', 'blu', 'brn', 'gry', 'grn', 'hzl', 'oth'})
-        if passport.get('ecl') not in eye_colors:
+        if height_unit == "in" and (height[0] < 59 or height[0] > 76):
             return 0
 
-        hair_color = passport.get('hcl')
-        passport_id = passport.get('pid')
+        eye_colors = set({"amb", "blu", "brn", "gry", "grn", "hzl", "oth"})
+        if passport.get("ecl") not in eye_colors:
+            return 0
+
+        hair_color = passport.get("hcl")
+        passport_id = passport.get("pid")
         if len(hair_color) != 7:
             return False
         if len(passport_id) != 9:
             return False
 
-        hair_color_match = re.compile('#[0-9a-f]{6}')
-        passport_id_match = re.compile('[0-9]{9}')
+        hair_color_match = re.compile("#[0-9a-f]{6}")
+        passport_id_match = re.compile("[0-9]{9}")
         if not re.match(hair_color_match, hair_color):
             return 0
         if not re.match(passport_id_match, passport_id):
@@ -186,21 +183,20 @@ def process_passport(passport: {str: str}, validate: bool = False) -> int:
 
 
 def count_valid_passports(validate: bool = False) -> int:
-    input_file_path: str = os.path.join(os.getcwd(), 'day4\\input.txt')
-    with open(input_file_path, 'r') as input_file:
+    input_file_path: str = os.path.join(os.getcwd(), "day4\\input.txt")
+    with open(input_file_path, "r") as input_file:
         current_passport = {}
         valid_passport_count = 0
         for line in input_file.readlines():
             # note: for this to work, the input file must end
             # with *2* blank lines to handle Python's EOF logic
             if not line.strip() and current_passport:
-                valid_passport_count += process_passport(
-                    current_passport, validate)
+                valid_passport_count += process_passport(current_passport, validate)
                 current_passport = {}
             else:
-                fields = line.strip().split(' ')
+                fields = line.strip().split(" ")
                 for field in fields:
-                    key, val = field.split(':')
+                    key, val = field.split(":")
                     if key not in current_passport:
                         current_passport[key] = val
 

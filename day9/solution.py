@@ -94,8 +94,8 @@ from queue import Queue
 def read_input() -> int:
     numbers: [int] = []
 
-    input_file_path: str = os.path.join(os.getcwd(), 'day9\\input.txt')
-    with open(input_file_path, 'r') as input_file:
+    input_file_path: str = os.path.join(os.getcwd(), "day9\\input.txt")
+    with open(input_file_path, "r") as input_file:
         for line in input_file.readlines():
             numbers.append(int(line.strip()))
 

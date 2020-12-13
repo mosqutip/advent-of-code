@@ -45,13 +45,13 @@ import types
 
 
 def count_valid_passwords_first() -> int:
-    input_file_path: str = os.path.join(os.getcwd(), 'day2\\input.txt')
-    with open(input_file_path, 'r') as input_file:
+    input_file_path: str = os.path.join(os.getcwd(), "day2\\input.txt")
+    with open(input_file_path, "r") as input_file:
         valid_passwords: int = 0
 
         for line in input_file.readlines():
-            rule, password = line.strip().split(':')
-            nums: [str, str] = rule[:-2].split('-')
+            rule, password = line.strip().split(":")
+            nums: [str, str] = rule[:-2].split("-")
 
             low_range: int = int(nums[0])
             high_range: int = int(nums[1])
@@ -71,13 +71,13 @@ def count_valid_passwords_first() -> int:
 
 
 def count_valid_passwords_second() -> int:
-    input_file_path: str = os.path.join(os.getcwd(), 'day2\\input.txt')
-    with open(input_file_path, 'r') as input_file:
+    input_file_path: str = os.path.join(os.getcwd(), "day2\\input.txt")
+    with open(input_file_path, "r") as input_file:
         valid_passwords: int = 0
 
         for line in input_file.readlines():
-            rule, password = line.strip().split(':')
-            nums: str = rule[:-2].split('-')
+            rule, password = line.strip().split(":")
+            nums: str = rule[:-2].split("-")
 
             first_index: int = int(nums[0])
             second_index: int = int(nums[1])

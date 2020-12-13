@@ -74,22 +74,22 @@ class BagRules:
         self.bag_map: {str: [str]} = {}
 
     def read_input(self) -> int:
-        input_file_path: str = os.path.join(os.getcwd(), 'day7\\input.txt')
-        with open(input_file_path, 'r') as input_file:
+        input_file_path: str = os.path.join(os.getcwd(), "day7\\input.txt")
+        with open(input_file_path, "r") as input_file:
             for line in input_file.readlines():
-                parts: [str] = line.strip().split(' ')
-                outer_color: str = ' '.join(parts[0: 2])
+                parts: [str] = line.strip().split(" ")
+                outer_color: str = " ".join(parts[0:2])
 
                 contained: [str] = parts[4:]
                 inner_bags: [str] = []
                 for i in range(0, len(contained), 4):
                     number = contained[i]
-                    if number == 'no':
+                    if number == "no":
                         continue
                     else:
                         number = int(number)
 
-                    inner_color: str = f'{contained[i + 1]} {contained[i + 2]}'
+                    inner_color: str = f"{contained[i + 1]} {contained[i + 2]}"
                     for _ in range(number):
                         inner_bags.append(inner_color)
 
@@ -143,9 +143,9 @@ class BagRules:
 def main():
     bag_rules = BagRules()
     bag_rules.read_input()
-    print(bag_rules.find_bag('shiny gold'))
-    print(bag_rules.find_bag_count('shiny gold'))
+    print(bag_rules.find_bag("shiny gold"))
+    print(bag_rules.find_bag_count("shiny gold"))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

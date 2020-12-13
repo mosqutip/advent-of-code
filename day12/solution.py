@@ -78,36 +78,36 @@ def navigate() -> None:
     # assume starting point is (0, 0)
     coords: [int, int] = [0, 0]
 
-    input_file_path: str = os.path.join(os.getcwd(), 'day12\\input.txt')
-    with open(input_file_path, 'r') as input_file:
+    input_file_path: str = os.path.join(os.getcwd(), "day12\\input.txt")
+    with open(input_file_path, "r") as input_file:
         for line in input_file.readlines():
             line: str = line.strip()
             action: str = line[0]
             units = int(line[1:])
 
             # fall through for F command
-            if action == 'F':
+            if action == "F":
                 if current_direction == 0:
-                    action = 'E'
+                    action = "E"
                 elif current_direction == 1:
-                    action = 'S'
+                    action = "S"
                 elif current_direction == 2:
-                    action = 'W'
+                    action = "W"
                 else:
-                    action = 'N'
+                    action = "N"
 
-            if action == 'N':
+            if action == "N":
                 coords[1] += units
-            elif action == 'S':
+            elif action == "S":
                 coords[1] -= units
-            elif action == 'E':
+            elif action == "E":
                 coords[0] += units
-            elif action == 'W':
+            elif action == "W":
                 coords[0] -= units
-            elif action == 'L':
+            elif action == "L":
                 current_direction -= units // 90
                 current_direction %= 4
-            elif action == 'R':
+            elif action == "R":
                 current_direction += units // 90
                 current_direction %= 4
 
@@ -118,40 +118,40 @@ def navigate_waypoint() -> None:
     waypoint_coords: [int, int] = [10, 1]
     ship_coords: [int, int] = [0, 0]
 
-    input_file_path: str = os.path.join(os.getcwd(), 'day12\\input.txt')
-    with open(input_file_path, 'r') as input_file:
+    input_file_path: str = os.path.join(os.getcwd(), "day12\\input.txt")
+    with open(input_file_path, "r") as input_file:
         for line in input_file.readlines():
             line: str = line.strip()
             action: str = line[0]
             units = int(line[1:])
 
-            if action == 'F':
+            if action == "F":
                 x_diff = units * (waypoint_coords[0] - ship_coords[0])
                 y_diff = units * (waypoint_coords[1] - ship_coords[1])
                 ship_coords[0] += x_diff
                 ship_coords[1] += y_diff
                 waypoint_coords[0] += x_diff
                 waypoint_coords[1] += y_diff
-            elif action == 'N':
+            elif action == "N":
                 waypoint_coords[1] += units
-            elif action == 'S':
+            elif action == "S":
                 waypoint_coords[1] -= units
-            elif action == 'E':
+            elif action == "E":
                 waypoint_coords[0] += units
-            elif action == 'W':
+            elif action == "W":
                 waypoint_coords[0] -= units
-            elif action == 'L' or action == 'R':
-                x_diff = (waypoint_coords[0] - ship_coords[0])
-                y_diff = (waypoint_coords[1] - ship_coords[1])
+            elif action == "L" or action == "R":
+                x_diff = waypoint_coords[0] - ship_coords[0]
+                y_diff = waypoint_coords[1] - ship_coords[1]
 
                 for _ in range(units // 90):
-                    if action == 'L':
+                    if action == "L":
                         x_diff, y_diff = -y_diff, x_diff
                     else:
                         x_diff, y_diff = y_diff, -x_diff
 
-                waypoint_coords[0] = (ship_coords[0] + x_diff)
-                waypoint_coords[1] = (ship_coords[1] + y_diff)
+                waypoint_coords[0] = ship_coords[0] + x_diff
+                waypoint_coords[1] = ship_coords[1] + y_diff
 
     return abs(ship_coords[0]) + abs(ship_coords[1])
 
