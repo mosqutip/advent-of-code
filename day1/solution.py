@@ -35,20 +35,6 @@ import types
 target: int = 2020
 
 
-def two_sum() -> int:
-    entries: set(int) = set()
-
-    input_file_path = os.path.join(os.getcwd(), "day1\\input.txt")
-    with open(input_file_path, "r") as input_file:
-        for line in input_file.readlines():
-            num: int = int(line.strip())
-            if (target - num) in entries:
-                return (target - num) * num
-            entries.add(num)
-
-    return 0
-
-
 def read_input() -> [int]:
     nums: [int] = []
 
@@ -60,6 +46,19 @@ def read_input() -> [int]:
     return nums
 
 
+def two_sum() -> int:
+    nums: [int] = read_input()
+    entries: {int} = set()
+
+    for num in nums:
+        if (target - num) in entries:
+            return (target - num) * num
+
+        entries.add(num)
+
+    return -1
+
+
 def three_sum() -> int:
     nums: [int] = read_input()
 
@@ -68,14 +67,16 @@ def three_sum() -> int:
         current_target: int = target - nums[i]
 
         for j in range((i + 1), len(nums)):
-            test_sum: int = current_target - nums[j]
-            if test_sum <= 0:
+            two_sum: int = current_target - nums[j]
+            if two_sum <= 0:
                 continue
-            if test_sum in entries:
-                return entries[test_sum][0] * entries[test_sum][1] * nums[j]
-            entries[nums[j]] = (nums[j], nums[i])
 
-    return 0
+            if two_sum in entries:
+                return nums[j] * entries[two_sum][0] * entries[two_sum][1]
+
+            entries[nums[j]] = (nums[i], nums[j])
+
+    return -1
 
 
 print(two_sum())
