@@ -43,57 +43,59 @@ Your puzzle answer was 321.
 import os
 import types
 
+from typing import Any
 
-def count_valid_passwords_first() -> int:
+
+def parse_input() -> [[Any]]:
+    input_data: [[Any]] = []
+
     input_file_path: str = os.path.join(os.getcwd(), "day2\\input.txt")
     with open(input_file_path, "r") as input_file:
-        valid_passwords: int = 0
-
         for line in input_file.readlines():
             rule, password = line.strip().split(":")
-            nums: [str, str] = rule[:-2].split("-")
-
-            low_range: int = int(nums[0])
-            high_range: int = int(nums[1])
             rule_char: str = rule[-1]
+            num_strs: [str, str] = rule[:-2].split("-")
+            first_num: int = int(num_strs[0])
+            second_num: int = int(num_strs[1])
 
-            count: int = 0
-            for char in password:
-                if char == rule_char:
-                    count += 1
-                if count > high_range:
-                    break
+            input_data.append([password, rule_char, first_num, second_num])
 
-            if low_range <= count <= high_range:
-                valid_passwords += 1
+    return input_data
+
+
+def count_valid_passwords() -> int:
+    password_data = parse_input()
+
+    valid_passwords: int = 0
+    for password, rule_char, low_range, high_range in password_data:
+        count: int = 0
+        for char in password:
+            if char == rule_char:
+                count += 1
+            if count > high_range:
+                break
+
+        if low_range <= count <= high_range:
+            valid_passwords += 1
 
     return valid_passwords
 
 
-def count_valid_passwords_second() -> int:
-    input_file_path: str = os.path.join(os.getcwd(), "day2\\input.txt")
-    with open(input_file_path, "r") as input_file:
-        valid_passwords: int = 0
+def count_valid_passwords_tobaggan() -> int:
+    password_data = parse_input()
 
-        for line in input_file.readlines():
-            rule, password = line.strip().split(":")
-            nums: str = rule[:-2].split("-")
+    valid_passwords: int = 0
+    for password, rule_char, first_index, second_index in password_data:
+        found: bool = False
+        if password[first_index] == rule_char:
+            found = not found
+        if password[second_index] == rule_char:
+            found = not found
 
-            first_index: int = int(nums[0])
-            second_index: int = int(nums[1])
-            rule_char: str = rule[-1]
-            length: int = len(password)
-
-            found: bool = False
-            if first_index < length and password[first_index] == rule_char:
-                found = not found
-            if second_index < length and password[second_index] == rule_char:
-                found = not found
-
-            valid_passwords += 1 if found else 0
+        valid_passwords += 1 if found else 0
 
     return valid_passwords
 
 
-print(count_valid_passwords_first())
-print(count_valid_passwords_second())
+print(count_valid_passwords())
+print(count_valid_passwords_tobaggan())
