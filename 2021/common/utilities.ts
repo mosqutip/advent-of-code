@@ -14,7 +14,7 @@ export function readInputFile(file_path: string) {
             throw new Error("Invalid input - check input file!");
         }
 
-        return lines;
+        return lines.filter(line => (line !== null && line != ""));
     } catch (err) {
         console.error(err);
     }

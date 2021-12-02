@@ -85,10 +85,6 @@ function countLargerMeasurements() {
     let previousDepth = -1;
     let largerMeasurementsCount = -1;
     for (let i = 0; i < inputLines.length; i++) {
-        if (inputLines[i] == "") {
-            break;
-        }
-
         const depth = parseInt(inputLines[i]);
         if (isNaN(depth)) {
             throw new Error("Invalid value in input - check input file!");
@@ -106,10 +102,6 @@ function countLargerMeasurements() {
 function countLargerSums() {
     let depths = [0, 0, 0];
     for (let i = 0; i < 3; i++) {
-        if (!inputLines[i]) {
-            return 0;
-        }
-
         const depth = parseInt(inputLines[i]);
         if (isNaN(depth)) {
             throw new Error("Invalid value in input - check input file!");
@@ -124,10 +116,6 @@ function countLargerSums() {
     let previousSum = (depth1 + depth2 + depth3);
     let largerSums = 0;
     for (let i = 3; i < inputLines.length; i++) {
-        if (!inputLines[i]) {
-            break;
-        }
-
         const depth = parseInt(inputLines[i]);
         if (isNaN(depth)) {
             throw new Error("Invalid value in input - check input file!");
