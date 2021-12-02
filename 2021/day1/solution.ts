@@ -77,7 +77,7 @@ Consider sums of a three-measurement sliding window. How many sums are larger th
 Your puzzle answer was 1538.
 */
 
-import { readInputFile, printAnswer } from '../common/utilities'
+import { printAnswer, readInputFile } from '../common/utilities';
 
 const inputLines = readInputFile(__dirname);
 
@@ -87,9 +87,8 @@ function countLargerMeasurements() {
     for (let i = 0; i < inputLines.length; i++) {
         const depth = parseInt(inputLines[i]);
         if (isNaN(depth)) {
-            throw new Error("Invalid value in input - check input file!");
-        }
-        else if (depth > previousDepth) {
+            throw new Error('Invalid value in input - check input file!');
+        } else if (depth > previousDepth) {
             largerMeasurementsCount += 1;
         }
 
@@ -104,7 +103,7 @@ function countLargerSums() {
     for (let i = 0; i < 3; i++) {
         const depth = parseInt(inputLines[i]);
         if (isNaN(depth)) {
-            throw new Error("Invalid value in input - check input file!");
+            throw new Error('Invalid value in input - check input file!');
         }
 
         depths[i] = depth;
@@ -113,18 +112,18 @@ function countLargerSums() {
     let depth1 = depths[0];
     let depth2 = depths[1];
     let depth3 = depths[2];
-    let previousSum = (depth1 + depth2 + depth3);
+    let previousSum = depth1 + depth2 + depth3;
     let largerSums = 0;
     for (let i = 3; i < inputLines.length; i++) {
         const depth = parseInt(inputLines[i]);
         if (isNaN(depth)) {
-            throw new Error("Invalid value in input - check input file!");
+            throw new Error('Invalid value in input - check input file!');
         }
 
         depth1 = depth2;
         depth2 = depth3;
         depth3 = depth;
-        let currentSum = (depth1 + depth2 + depth3);
+        let currentSum = depth1 + depth2 + depth3;
         if (currentSum > previousSum) {
             largerSums += 1;
         }
