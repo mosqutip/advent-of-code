@@ -134,6 +134,7 @@ function countLargerSums() {
 }
 
 const partOneAnswer = countLargerMeasurements();
-const partTwoAnswer = countLargerSums();
 printAnswer(1, partOneAnswer.toString());
+
+const partTwoAnswer = countLargerSums();
 printAnswer(2, partTwoAnswer.toString());

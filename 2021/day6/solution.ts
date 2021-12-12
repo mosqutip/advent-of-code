@@ -69,26 +69,6 @@ import { printAnswer, readInputFile } from '../common/utilities';
 const inputLines = readInputFile(__dirname);
 const fishTimer: number = 6;
 const newFishTimer: number = 8;
-// function getFishCount(numDays: number) {
-//     let ages = inputLines[0].split(',').map((fish) => parseInt(fish));
-//     for (let i = numDays; i > 0; i--) {
-//         let newAges = [];
-//         for (let j = 0; j < ages.length; j++) {
-//             if (ages[j] > 0) {
-//                 ages[j]--;
-//             } else if (ages[j] == 0) {
-//                 ages[j] = 6;
-//                 newAges.push(8);
-//             }
-//         }
-
-//         if (newAges) {
-//             ages = ages.concat(newAges);
-//         }
-//     }
-
-//     return ages.length;
-// }
 
 function getFishCount(numDays: number) {
     let timers = inputLines[0].split(',').map((fish) => parseInt(fish));
@@ -111,6 +91,7 @@ function getFishCount(numDays: number) {
 }
 
 const partOneAnswer = getFishCount(80);
-const partTwoAnswer = getFishCount(256);
 printAnswer(1, partOneAnswer.toString());
+
+const partTwoAnswer = getFishCount(256);
 printAnswer(2, partTwoAnswer.toString());

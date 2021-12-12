@@ -128,6 +128,7 @@ function updateCoveredCoords(coveredCoords: Map<string, number>, x: number, y: n
 }
 
 const partOneAnswer = findIntersectingLines();
-const partTwoAnswer = findIntersectingLines(true);
 printAnswer(1, partOneAnswer.toString());
+
+const partTwoAnswer = findIntersectingLines(true);
 printAnswer(2, partTwoAnswer.toString());

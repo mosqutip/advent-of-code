@@ -205,6 +205,7 @@ function calculateLifeSupportRating() {
 }
 
 const partOneAnswer = calculatePowerConsumption();
-const partTwoAnswer = calculateLifeSupportRating();
 printAnswer(1, partOneAnswer.toString());
+
+const partTwoAnswer = calculateLifeSupportRating();
 printAnswer(2, partTwoAnswer.toString());

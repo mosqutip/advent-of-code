@@ -239,8 +239,7 @@ function loseGame() {
 }
 
 const partOneAnswer = winGame();
-const partTwoAnswer = loseGame();
 printAnswer(1, partOneAnswer.toString());
-printAnswer(2, partTwoAnswer.toString());
 
-// const vs let vs var
+const partTwoAnswer = loseGame();
+printAnswer(2, partTwoAnswer.toString());

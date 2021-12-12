@@ -110,6 +110,7 @@ function calculatePositionWithAim() {
 }
 
 const partOneAnswer = calculatePosition();
-const partTwoAnswer = calculatePositionWithAim();
 printAnswer(1, partOneAnswer.toString());
+
+const partTwoAnswer = calculatePositionWithAim();
 printAnswer(2, partTwoAnswer.toString());
