@@ -25,3 +25,15 @@ export function readInputFile(file_path: string) {
 export function printAnswer(part: number, answer: string) {
     console.log(`The answer to day ${day}, part ${part} is: ${answer}.`);
 }
+
+export function print3DMatrix(matrix: Array<Array<Array<any>>>) {
+    for (let i = 0; i < matrix.length; i++) {
+        let vals = [];
+        for (let j = 0; j < matrix[0].length; j++) {
+            vals.push(matrix[i][j][0]);
+        }
+        console.log(vals.join(''));
+    }
+
+    console.log('');
+}
