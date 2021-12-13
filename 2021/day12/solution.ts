@@ -149,7 +149,7 @@ The slightly larger example above now has 103 paths through it, and the even lar
 
 Given these new rules, how many paths through this cave system are there?
 
-Your puzzle answer was 
+Your puzzle answer was 85062.
 */
 
 import { printAnswer, readInputFile } from '../common/utilities';

@@ -70,6 +70,8 @@ You aren't sure how many bingo boards a giant squid could play at once, so rathe
 In the above example, the second board is the last to win, which happens after 13 is eventually called and its middle column is completely marked. If you were to keep playing until this point, the second board would have a sum of unmarked numbers equal to 148 for a final score of 148 * 13 = 1924.
 
 Figure out which board will win last. Once it wins, what would its final score be?
+
+Your puzzle answer was 3178.
 */
 
 import { printAnswer, readInputFile } from '../common/utilities';
@@ -192,7 +194,8 @@ function winGame() {
         markDrawnNumber(drawNumbers[i]);
     }
 
-    let lastDrawnIndex = 3;
+    // We can safely draw four numbers (indices 0 to [BOARD_SIZE - 2]) before a win is possible.
+    let lastDrawnIndex = BOARD_SIZE - 2;
     let isGameOver = false;
     let score = 0;
     while (!isGameOver) {
@@ -216,7 +219,7 @@ function loseGame() {
         markDrawnNumber(drawNumbers[i]);
     }
 
-    let lastDrawnIndex = 3;
+    let lastDrawnIndex = BOARD_SIZE - 2;
     let isGameOver = false;
     let score = 0;
     let lastBoard = -1;
