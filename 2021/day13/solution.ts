@@ -118,52 +118,44 @@ Finish folding the transparent paper according to the instructions. The manual s
 
 What code do you use to activate the infrared thermal imaging camera system?
 
-Your puzzle answer was HKUJGAJZ
+Your puzzle answer was HKUJGAJZ.
 */
 
 import { printAnswer, readInputFile } from '../common/utilities';
 
 const inputLines = readInputFile(__dirname);
 
-function constructPaper() {
-    let coords = new Map<string, number>();
+function parseInput(): Array<any> {
+    let coords = new Set<string>();
     let folds: Array<Array<any>> = [];
     for (let line of inputLines) {
         if (line.startsWith('fold')) {
             let fold: Array<string> = line.split(' ').pop()?.split('=')!;
             folds.push([fold[0], parseInt(fold[1])]);
         } else {
-            coords.set(line, 1);
+            coords.add(line);
         }
     }
 
-    let result: Array<any> = [coords, folds];
-    return result;
+    return [coords, folds];
 }
 
-function fold(coords: Map<string, number>, fold: Array<any>) {
-    let horizontalFold = true;
-    if (fold[0] == 'y') {
-        horizontalFold = false;
-    }
-
-    let keys = Array.from(coords.keys());
+function fold(coords: Set<string>, fold: Array<any>) {
+    let keys = Array.from(coords);
     for (let coord of keys) {
         let vals = coord.split(',').map((num) => parseInt(num));
-        if (horizontalFold && vals[0] > fold[1]) {
+        if (fold[0] == 'x' && vals[0] > fold[1]) {
             let difference = vals[0] - fold[1];
             vals[0] -= difference * 2;
-        } else if (!horizontalFold && vals[1] > fold[1]) {
+        } else if (fold[0] == 'y' && vals[1] > fold[1]) {
             let difference = vals[1] - fold[1];
             vals[1] -= difference * 2;
         }
 
         let newCoord = `${vals[0]},${vals[1]}`;
         if (newCoord != coord) {
-            if (coords.has(newCoord)) {
-                coords.set(newCoord, coords.get(newCoord)! + 1);
-            } else {
-                coords.set(newCoord, 1);
+            if (!coords.has(newCoord)) {
+                coords.add(newCoord);
             }
 
             coords.delete(coord);
@@ -173,7 +165,7 @@ function fold(coords: Map<string, number>, fold: Array<any>) {
     return coords;
 }
 
-function printCoords(coords: Map<string, number>) {
+function printCoords(coords: Set<string>) {
     let values = Array.from(coords.keys())
         .map((str) => str.split(','))
         .map((pair) => [parseInt(pair[0]), parseInt(pair[1])]);
@@ -189,27 +181,33 @@ function printCoords(coords: Map<string, number>) {
         }
     }
 
+    let paper = [];
     for (let i = 0; i <= maxRow; i++) {
         let line = [];
-        for (let j = 0; j <= maxCol; j++) {
+        // The paper folds reversed to the console view; flip the output order.
+        for (let j = maxCol; j >= 0; j--) {
             if (coords.has(`${i},${j}`)) {
                 line.push('#');
             } else {
                 line.push('.');
             }
         }
-        console.log(line);
+        paper.push(line);
     }
-    console.log();
+
+    for (let i = 0; i < paper.length; i++) {
+        console.log(paper[i].join(''));
+    }
 }
 
-let data = constructPaper();
-let coords = data[0];
-let folds = data[1];
-coords = fold(coords, folds[0]);
-printAnswer(1, coords.size);
+let paperData = parseInput();
+let originalCoords = paperData[0];
+let folds = paperData[1];
+let foldedCoords = fold(originalCoords, folds[0]);
+printAnswer(1, foldedCoords.size.toString());
 
-for (let i = 1; i < data[1].length; i++) {
-    coords = fold(coords, folds[i]);
+for (let i = 1; i < paperData[1].length; i++) {
+    foldedCoords = fold(foldedCoords, folds[i]);
 }
-printCoords(coords);
+printAnswer(2, '');
+printCoords(foldedCoords);
