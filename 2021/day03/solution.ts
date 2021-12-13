@@ -83,7 +83,7 @@ function calculatePowerConsumption() {
     for (let line of inputLines) {
         for (let i = 0; i < line.length; i++) {
             if (line[i] == '1') {
-                bits[i] += 1;
+                bits[i]++;
             }
         }
     }
