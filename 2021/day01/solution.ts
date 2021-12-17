@@ -79,62 +79,46 @@ Your puzzle answer was 1538.
 
 import { printAnswer, readInputFile } from '../common/utilities';
 
-const inputLines = readInputFile(__dirname);
+function countDepthIncreases(depths: Array<number>): number {
+    let depthIncreases: number = 0;
+    let previousDepth = depths[0];
 
-function countLargerMeasurements() {
-    let previousDepth = -1;
-    let largerMeasurementsCount = -1;
-    for (let i = 0; i < inputLines.length; i++) {
-        const depth = parseInt(inputLines[i]);
-        if (isNaN(depth)) {
-            throw new Error('Invalid value in input - check input file!');
-        } else if (depth > previousDepth) {
-            largerMeasurementsCount += 1;
+    for (let i = 1; i < depths.length; i++) {
+        const depth = depths[i];
+
+        if (depth > previousDepth) {
+            depthIncreases++;
         }
 
         previousDepth = depth;
     }
 
-    return largerMeasurementsCount;
+    return depthIncreases;
 }
 
-function countLargerSums() {
-    let depths = [0, 0, 0];
-    for (let i = 0; i < 3; i++) {
-        const depth = parseInt(inputLines[i]);
-        if (isNaN(depth)) {
-            throw new Error('Invalid value in input - check input file!');
+function countDepthSumIncreases(depths: Array<number>): number {
+    let depthSumIncreases: number = 0;
+    let depthSum = depths[0] + depths[1];
+    let previousDepthSum = Number.MAX_SAFE_INTEGER;
+    let i = 2;
+    do {
+        depthSum += depths[i];
+
+        if (depthSum > previousDepthSum) {
+            depthSumIncreases++;
         }
 
-        depths[i] = depth;
-    }
+        previousDepthSum = depthSum;
+        depthSum -= depths[i - 2];
+    } while (++i < depths.length);
 
-    let depth1 = depths[0];
-    let depth2 = depths[1];
-    let depth3 = depths[2];
-    let previousSum = depth1 + depth2 + depth3;
-    let largerSums = 0;
-    for (let i = 3; i < inputLines.length; i++) {
-        const depth = parseInt(inputLines[i]);
-        if (isNaN(depth)) {
-            throw new Error('Invalid value in input - check input file!');
-        }
-
-        depth1 = depth2;
-        depth2 = depth3;
-        depth3 = depth;
-        let currentSum = depth1 + depth2 + depth3;
-        if (currentSum > previousSum) {
-            largerSums += 1;
-        }
-        previousSum = currentSum;
-    }
-
-    return largerSums;
+    return depthSumIncreases;
 }
 
-const partOneAnswer = countLargerMeasurements();
+const depths = readInputFile(__dirname).map((depth) => parseInt(depth));
+
+const partOneAnswer = countDepthIncreases(depths);
 printAnswer(1, partOneAnswer.toString());
 
-const partTwoAnswer = countLargerSums();
+const partTwoAnswer = countDepthSumIncreases(depths);
 printAnswer(2, partTwoAnswer.toString());
