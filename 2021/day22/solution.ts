@@ -208,13 +208,19 @@ function parseInput() {
     return steps;
 }
 
-function toggleCubes(steps: any[]) {
+function toggleCubes(steps: any[], shouldInitialize: boolean = false): Map<string, number> {
     let reactor = new Map<string, number>();
     for (let step of steps) {
         let stepState = step[0];
         let [stepX0, stepX1] = step[1];
         let [stepY0, stepY1] = step[2];
         let [stepZ0, stepZ1] = step[3];
+        if (
+            shouldInitialize &&
+            (stepX0 < -50 || stepX1 > 50 || stepY0 < -50 || stepY1 > 50 || stepZ0 < -50 || stepZ1 > 50)
+        ) {
+            return reactor;
+        }
 
         let intermediateReactor = new Map<string, number>();
         for (let [coord, state] of reactor.entries()) {
@@ -267,9 +273,10 @@ function countCubes(reactor: Map<string, number>) {
 
 const rebootSteps = parseInput();
 
-const reactor = toggleCubes(rebootSteps);
-// const partOneAnswer = countCubes(reactor);
-// printAnswer(1, partOneAnswer.toString());
+const initializedReactor = toggleCubes(rebootSteps, true);
+const partOneAnswer = countCubes(initializedReactor);
+printAnswer(1, partOneAnswer.toString());
 
-const partTwoAnswer = countCubes(reactor);
+const rebootedReactor = toggleCubes(rebootSteps);
+const partTwoAnswer = countCubes(rebootedReactor);
 printAnswer(2, partTwoAnswer.toString());
