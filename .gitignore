@@ -16,3 +16,7 @@
 
 # Build directories
 **/build/
+
+# C# generated files
+bin/
+obj/

@@ -148,7 +148,7 @@ class Day01()
         return calibrationValues.Sum();
     }
 
-    static void Main()
+    public static void solve()
     {
         Console.WriteLine($"Part 1: {solvePartOne()}");
         Console.WriteLine($"Part 2: {solvePartTwo()}");

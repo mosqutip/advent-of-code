@@ -27,25 +27,112 @@ In the example above, games 1, 2, and 5 would have been possible if the bag had 
 
 Determine which games would have been possible if the bag had been loaded with only 12 red cubes, 13 green cubes, and 14 blue cubes. What is the sum of the IDs of those games?
 
+Your puzzle answer was 2149.
+
+--- Part Two ---
+The Elf says they've stopped producing snow because they aren't getting any water! He isn't sure why the water stopped; however, he can show you how to get to the water source to check it out for yourself. It's just up ahead!
+
+As you continue your walk, the Elf poses a second question: in each game you played, what is the fewest number of cubes of each color that could have been in the bag to make the game possible?
+
+Again consider the example games from earlier:
+
+Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
+Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
+Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red
+Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
+Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green
+
+    - In game 1, the game could have been played with as few as 4 red, 2 green, and 6 blue cubes. If any color had even one fewer cube, the game would have been impossible.
+    - Game 2 could have been played with a minimum of 1 red, 3 green, and 4 blue cubes.
+    - Game 3 must have been played with at least 20 red, 13 green, and 6 blue cubes.
+    - Game 4 required at least 14 red, 3 green, and 15 blue cubes.
+    - Game 5 needed no fewer than 6 red, 3 green, and 2 blue cubes in the bag.
+
+The power of a set of cubes is equal to the numbers of red, green, and blue cubes multiplied together. The power of the minimum set of cubes in game 1 is 48. In games 2-5 it was 12, 1560, 630, and 36, respectively. Adding up these five powers produces the sum 2286.
+
+For each game, find the minimum set of cubes that must have been present. What is the sum of the power of these sets?
+
 */
 
 using AdventOfCode2023;
 
-class Day02()
+public class Day02()
 {
-    private static List<string> inputFileLines = Utilites.ReadInputFile("");
+    private static List<string> inputFileLines = Utilites.ReadInputFile("02");
 
     private static int solvePartOne()
     {
-        throw new NotImplementedException();
+        Dictionary<string, int> colorLimits = new Dictionary<string, int>
+        {
+            {"red", 12},
+            {"green", 13},
+            {"blue", 14}
+        };
+
+        int gameIndex = 1;
+        int indexSum = 0;
+        foreach (var game in inputFileLines)
+        {
+            bool isValidGame = true;
+            var rounds = game.Split(":")[1].Split(";");
+            foreach (var round in rounds)
+            {
+                var cubes = round.Trim().Split(",");
+                foreach (var cube in cubes)
+                {
+                    var cubeProperties = cube.Trim().Split(" ");
+                    int count = int.Parse(cubeProperties[0]);
+                    string color = cubeProperties[1];
+
+                    if (count > colorLimits[color])
+                    {
+                        isValidGame = false;
+                        break;
+                    }
+                }
+            }
+
+            indexSum += isValidGame ? gameIndex : 0;
+            gameIndex++;
+        }
+
+        return indexSum;
     }
 
     private static int solvePartTwo()
     {
-        throw new NotImplementedException();
+        Dictionary<string, int> minColors = new Dictionary<string, int>(3);
+        int powerSet = 0;
+        foreach (var game in inputFileLines)
+        {
+            minColors["red"] = 0;
+            minColors["green"] = 0;
+            minColors["blue"] = 0;
+
+            var rounds = game.Split(":")[1].Split(";");
+            foreach (var round in rounds)
+            {
+                var cubes = round.Trim().Split(",");
+                foreach (var cube in cubes)
+                {
+                    var cubeProperties = cube.Trim().Split(" ");
+                    int count = int.Parse(cubeProperties[0]);
+                    string color = cubeProperties[1];
+
+                    if (count > minColors[color])
+                    {
+                        minColors[color] = count;
+                    }
+                }
+            }
+
+            powerSet += (minColors["red"] * minColors["green"] * minColors["blue"]);
+        }
+
+        return powerSet;
     }
 
-    static void Main()
+    public static void solve()
     {
         Console.WriteLine($"Part 1: {solvePartOne()}");
         Console.WriteLine($"Part 2: {solvePartTwo()}");
