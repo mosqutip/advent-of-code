@@ -18,7 +18,7 @@ class Day00()
         throw new NotImplementedException();
     }
 
-    static void Main()
+    public static void solve()
     {
         Console.WriteLine($"Part 1: {solvePartOne()}");
         Console.WriteLine($"Part 2: {solvePartTwo()}");
