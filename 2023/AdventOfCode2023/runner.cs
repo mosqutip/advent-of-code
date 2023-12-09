@@ -20,7 +20,13 @@ class Runner
         // Console.WriteLine("===== DAY 06 SOLUTION =====");
         // Day06.solve();
 
-        Console.WriteLine("===== DAY 07 SOLUTION =====");
-        Day07.solve();
+        // Console.WriteLine("===== DAY 07 SOLUTION =====");
+        // Day07.solve();
+
+        // Console.WriteLine("===== DAY 08 SOLUTION =====");
+        // Day08.solve();
+
+        Console.WriteLine("===== DAY 09 SOLUTION =====");
+        Day09.solve();
     }
 }

@@ -62,9 +62,6 @@ What is the sum of all of the gear ratios in your engine schematic?
 Your puzzle answer was 91031374.
 */
 
-using System.ComponentModel.DataAnnotations;
-using System.Globalization;
-using System.Runtime.InteropServices;
 using AdventOfCode2023;
 
 struct PartNumber

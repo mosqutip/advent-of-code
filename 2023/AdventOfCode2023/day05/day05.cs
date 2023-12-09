@@ -99,22 +99,40 @@ So, the lowest location number in this example is 35.
 
 What is the lowest location number that corresponds to any of the initial seed numbers?
 
+Your puzzle answer was 240320250.
+
+--- Part Two ---
+Everyone will starve if you only plant such a small number of seeds. Re-reading the almanac, it looks like the seeds: line actually describes ranges of seed numbers.
+
+The values on the initial seeds: line come in pairs. Within each pair, the first value is the start of the range and the second value is the length of the range. So, in the first line of the example above:
+
+seeds: 79 14 55 13
+
+This line describes two ranges of seed numbers to be planted in the garden. The first range starts with seed number 79 and contains 14 values: 79, 80, ..., 91, 92. The second range starts with seed number 55 and contains 13 values: 55, 56, ..., 66, 67.
+
+Now, rather than considering four seed numbers, you need to consider a total of 27 seed numbers.
+
+In the above example, the lowest location number can be obtained from seed number 82, which corresponds to soil 84, fertilizer 84, water 84, light 77, temperature 45, humidity 46, and location 46. So, the lowest location number is 46.
+
+Consider all of the initial seed numbers listed in the ranges on the first line of the almanac. What is the lowest location number that corresponds to any of the initial seed numbers?
+
+Your puzzle answer was 28580589.
 */
 
 using AdventOfCode2023;
 
 public struct Map
 {
-    public int source;
-    public int dest;
-    public int range;
+    public long dest;
+    public long source;
+    public long range;
 }
 
 class Day05()
 {
     private static List<string> inputFileLines = Utilites.ReadInputFile("05");
 
-    private static List<int> seeds = new List<int>();
+    private static List<long> seeds = new List<long>();
 
     private static List<Map> seedToSoil = new List<Map>();
     private static List<Map> soilToFertilizer = new List<Map>();
@@ -133,9 +151,9 @@ class Day05()
             map.Add(
                 new Map
                 {
-                    source = int.Parse(values[0]),
-                    dest = int.Parse(values[1]),
-                    range = int.Parse(values[2])
+                    dest = long.Parse(values[0]),
+                    source = long.Parse(values[1]),
+                    range = long.Parse(values[2])
                 }
             );
             lineNumber++;
@@ -149,7 +167,7 @@ class Day05()
         var seedText = inputFileLines[0].Split(':')[1].Trim().Split(' ');
         foreach (var seed in seedText)
         {
-            seeds.Add(int.Parse(seed));
+            seeds.Add(long.Parse(seed));
         }
 
         int lineNumber = 1;
@@ -195,20 +213,119 @@ class Day05()
         }
     }
 
-    private static int solvePartOne()
+    private static Dictionary<long, long> mapRanges(Dictionary<long, long> seedMap, List<Map> sourceRangeMap)
     {
-        throw new NotImplementedException();
+        Dictionary<long, long> destRangeMap = new Dictionary<long, long>();
+        foreach (var pair in seedMap)
+        {
+            bool foundMatch = false;
+            foreach (var range in sourceRangeMap)
+            {
+                if (pair.Value >= range.source && pair.Value < range.source + range.range)
+                {
+                    destRangeMap[pair.Key] = ((pair.Value - range.source) + range.dest);
+                    foundMatch = true;
+                }
+            }
+
+            if (!foundMatch)
+            {
+                destRangeMap[pair.Key] = pair.Value;
+            }
+        }
+
+        return destRangeMap;
     }
 
-    private static int solvePartTwo()
+    private static long solvePartOne()
     {
-        throw new NotImplementedException();
+        Dictionary<long, long> seedToSoilRanges = new Dictionary<long, long>();
+        foreach (var seed in seeds)
+        {
+            bool foundMatch = false;
+            foreach (var range in seedToSoil)
+            {
+                if (seed >= range.source && seed < range.source + range.range)
+                {
+                    seedToSoilRanges[seed] = ((seed - range.source) + range.dest);
+                    foundMatch = true;
+                    break;
+                }
+            }
+
+            if (!foundMatch)
+            {
+                seedToSoilRanges[seed] = seed;
+            }
+        }
+
+        var seedToFertilizerRanges = mapRanges(seedToSoilRanges, soilToFertilizer);
+        var seedToWaterRanges = mapRanges(seedToFertilizerRanges, fertilizerToWater);
+        var seedToLightRanges = mapRanges(seedToWaterRanges, waterToLight);
+        var seedToTemperatureRanges = mapRanges(seedToLightRanges, lightToTemperature);
+        var seedToHumidityRanges = mapRanges(seedToTemperatureRanges, temperatureToHumidity);
+        var seedToLocationRanges = mapRanges(seedToHumidityRanges, humidityToLocation);
+
+        long lowestLocation = long.MaxValue;
+        foreach (long location in seedToLocationRanges.Values)
+        {
+            if (location < lowestLocation)
+            {
+                lowestLocation = location;
+            }
+        }
+
+        return lowestLocation;
+    }
+
+    private static long solvePartTwo()
+    {
+        Dictionary<long, long> seedToSoilRanges = new Dictionary<long, long>();
+        for (int i = 0; i < seeds.Count; i += 2)
+        {
+            for (long seed = seeds[i]; seed < seeds[i] + seeds[i + 1]; seed++)
+            {
+                bool foundMatch = false;
+                foreach (var range in seedToSoil)
+                {
+                    if (seed >= range.source && seed < range.source + range.range)
+                    {
+                        seedToSoilRanges[seed] = ((seed - range.source) + range.dest);
+                        foundMatch = true;
+                        break;
+                    }
+                }
+
+                if (!foundMatch)
+                {
+                    seedToSoilRanges[seed] = seed;
+                }
+            }
+        }
+
+        var seedToFertilizerRanges = mapRanges(seedToSoilRanges, soilToFertilizer);
+        var seedToWaterRanges = mapRanges(seedToFertilizerRanges, fertilizerToWater);
+        var seedToLightRanges = mapRanges(seedToWaterRanges, waterToLight);
+        var seedToTemperatureRanges = mapRanges(seedToLightRanges, lightToTemperature);
+        var seedToHumidityRanges = mapRanges(seedToTemperatureRanges, temperatureToHumidity);
+        var seedToLocationRanges = mapRanges(seedToHumidityRanges, humidityToLocation);
+
+        long lowestLocation = long.MaxValue;
+        foreach (long location in seedToLocationRanges.Values)
+        {
+            if (location < lowestLocation)
+            {
+                lowestLocation = location;
+            }
+        }
+
+        return lowestLocation;
     }
 
     public static void solve()
     {
         parseMap();
-        // Console.WriteLine($"Part 1: {solvePartOne()}");
-        // Console.WriteLine($"Part 2: {solvePartTwo()}");
+        Console.WriteLine($"Part 1: {solvePartOne()}");
+        Console.WriteLine($"Part 2: {solvePartTwo()}");
     }
 }
