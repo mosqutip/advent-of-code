@@ -10,5 +10,14 @@ namespace AdventOfCode2023
 
             return File.ReadLines(inputFilePath).ToList();
         }
+
+        public static void WriteOutputFile(string day, List<string> lines)
+        {
+            string workingDirectory = System.AppDomain.CurrentDomain.BaseDirectory ?? string.Empty;
+            string projectDirectory = Directory.GetParent(workingDirectory).Parent.Parent.Parent.FullName ?? string.Empty;
+            string outputFilePath = Path.Combine(projectDirectory, $"day{day}", "output.txt");
+
+            File.WriteAllLines(outputFilePath, lines);
+        }
     }
 }

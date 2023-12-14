@@ -205,6 +205,7 @@ In this last example, 10 tiles are enclosed by the loop.
 
 Figure out whether you have time to search for the nest by calculating the area within the loop. How many tiles are enclosed by the loop?
 
+Your puzzle answer was 349.
 */
 
 using AdventOfCode2023;
@@ -212,7 +213,9 @@ using AdventOfCode2023;
 class Day10()
 {
     private static List<string> inputFileLines = Utilites.ReadInputFile("10");
+
     private static List<char[]> pipeMap = new List<char[]>();
+
     private static List<int[]> pipeMapSteps = new List<int[]>();
 
     private static Tuple<int, int> sCoords;
@@ -223,7 +226,7 @@ class Day10()
         {
             var line = inputFileLines[i];
             pipeMap.Add(line.ToCharArray());
-            pipeMapSteps.Add(Enumerable.Repeat(0, line.Length).ToArray());
+            pipeMapSteps.Add(Enumerable.Repeat(-1, line.Length).ToArray());
             for (int j = 0; j < line.Length; j++)
             {
                 if (sCoords == null && char.ToUpper(line[j]) == 'S')
@@ -237,13 +240,17 @@ class Day10()
     private static List<Tuple<int, int, char>> findStartConnections()
     {
         List<Tuple<int, int, char>> pipes = new List<Tuple<int, int, char>>();
+        char[] startPipeNeighbors = new char[2];
+        int index = 0;
 
         if (sCoords.Item1 + 1 < pipeMap.Count)
         {
             char pipe = char.ToUpper(pipeMap[sCoords.Item1 + 1][sCoords.Item2]);
             if (pipe == '|' || pipe == 'L' || pipe == 'J')
             {
-                pipes.Add(new Tuple<int, int, char>(sCoords.Item1 + 1, sCoords.Item2, 'U'));
+                startPipeNeighbors[index] = 'U';
+                pipes.Add(new Tuple<int, int, char>(sCoords.Item1 + 1, sCoords.Item2, startPipeNeighbors[index]));
+                index++;
                 pipeMapSteps[sCoords.Item1 + 1][sCoords.Item2] = 1;
             }
         }
@@ -252,7 +259,9 @@ class Day10()
             char pipe = char.ToUpper(pipeMap[sCoords.Item1 - 1][sCoords.Item2]);
             if (pipe == '|' || pipe == '7' || pipe == 'F')
             {
-                pipes.Add(new Tuple<int, int, char>(sCoords.Item1 - 1, sCoords.Item2, 'D'));
+                startPipeNeighbors[index] = 'D';
+                pipes.Add(new Tuple<int, int, char>(sCoords.Item1 - 1, sCoords.Item2, startPipeNeighbors[index]));
+                index++;
                 pipeMapSteps[sCoords.Item1 - 1][sCoords.Item2] = 1;
             }
         }
@@ -261,7 +270,9 @@ class Day10()
             char pipe = char.ToUpper(pipeMap[sCoords.Item1][sCoords.Item2 - 1]);
             if (pipe == '-' || pipe == 'L' || pipe == 'F')
             {
-                pipes.Add(new Tuple<int, int, char>(sCoords.Item1, sCoords.Item2 - 1, 'R'));
+                startPipeNeighbors[index] = 'R';
+                pipes.Add(new Tuple<int, int, char>(sCoords.Item1, sCoords.Item2 - 1, startPipeNeighbors[index]));
+                index++;
                 pipeMapSteps[sCoords.Item1][sCoords.Item2 - 1] = 1;
             }
         }
@@ -270,10 +281,40 @@ class Day10()
             char pipe = char.ToUpper(pipeMap[sCoords.Item1][sCoords.Item2 + 1]);
             if (pipe == '-' || pipe == 'J' || pipe == '7')
             {
-                pipes.Add(new Tuple<int, int, char>(sCoords.Item1, sCoords.Item2 + 1, 'L'));
+                startPipeNeighbors[index] = 'L';
+                pipes.Add(new Tuple<int, int, char>(sCoords.Item1, sCoords.Item2 + 1, startPipeNeighbors[index]));
                 pipeMapSteps[sCoords.Item1][sCoords.Item2 + 1] = 1;
             }
         }
+
+        char startPipe = '.';
+        var neighbors = string.Join("", startPipeNeighbors);
+        switch (neighbors)
+        {
+            case "UD":
+                startPipe = '|';
+                break;
+            case "UL":
+                startPipe = 'F';
+                break;
+            case "UR":
+                startPipe = '7';
+                break;
+            case "DL":
+                startPipe = 'L';
+                break;
+            case "DR":
+                startPipe = '7';
+                break;
+            case "LR":
+                startPipe = '-';
+                break;
+            default:
+                break;
+        }
+
+        pipeMap[sCoords.Item1][sCoords.Item2] = startPipe;
+        pipeMapSteps[sCoords.Item1][sCoords.Item2] = 0;
 
         return pipes;
     }
@@ -349,33 +390,103 @@ class Day10()
     private static int solvePartOne()
     {
         List<Tuple<int, int, char>> pipes = findStartConnections();
-
         int steps = 1;
+
         while (true)
         {
             pipes[0] = navigatePipes(pipes[0]);
+            steps++;
+            pipeMapSteps[pipes[0].Item1][pipes[0].Item2] = steps;
+            if (pipes[0].Item1 == pipes[1].Item1 && pipes[0].Item2 == pipes[1].Item2)
+            {
+                return steps - 1;
+            }
+            pipes[1] = navigatePipes(pipes[1]);
+            pipeMapSteps[pipes[1].Item1][pipes[1].Item2] = steps;
             if (pipes[0].Item1 == pipes[1].Item1 && pipes[0].Item2 == pipes[1].Item2)
             {
                 return steps;
             }
-            pipes[1] = navigatePipes(pipes[1]);
-            if (pipes[0].Item1 == pipes[1].Item1 && pipes[0].Item2 == pipes[1].Item2)
-            {
-                return steps + 1;
-            }
-            steps++;
         }
     }
 
     private static int solvePartTwo()
     {
-        throw new NotImplementedException();
+        int sum = 0;
+        for (int i = 0; i < pipeMap.Count; i++)
+        {
+            bool isOdd = false;
+            for (int j = 0; j < pipeMap[i].Length; j++)
+            {
+                char pipe = pipeMap[i][j];
+
+                // Within main loop
+                if (pipeMapSteps[i][j] != -1)
+                {
+                    // Always ignore non-vertical pipes in the main loop
+                    if (pipe == '-')
+                    {
+                        continue;
+                    }
+                    else if (pipe == '|' || pipe == 'J' || pipe == '7')
+                    {
+                        isOdd = !isOdd;
+                    }
+                    // FJ and L7 are odd, F7 and LJ are even
+                    else if (pipe == 'F' || pipe == 'L')
+                    {
+                        for (int k = j + 1; k < pipeMap[i].Length; k++)
+                        {
+                            if (pipeMap[i][k] == '-')
+                            {
+                                continue;
+                            }
+                            if (pipe == 'F')
+                            {
+                                if (pipeMap[i][k] == 'J')
+                                {
+                                    isOdd = !isOdd;
+                                    j = k;
+                                    break;
+                                }
+                                else if (pipeMap[i][k] == '7')
+                                {
+                                    j = k;
+                                    break;
+                                }
+                            }
+                            else if (pipe == 'L')
+                            {
+                                if (pipeMap[i][k] == '7')
+                                {
+                                    isOdd = !isOdd;
+                                    j = k;
+                                    break;
+                                }
+                                else if (pipeMap[i][k] == 'J')
+                                {
+                                    j = k;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                // Not within main loop
+                else
+                {
+                    sum += isOdd ? 1 : 0;
+                }
+            }
+        }
+
+        return sum;
     }
 
     public static void solve()
     {
         parseMap();
         Console.WriteLine($"Part 1: {solvePartOne()}");
-        // Console.WriteLine($"Part 2: {solvePartTwo()}");
+        Console.WriteLine($"Part 2: {solvePartTwo()}");
     }
 }

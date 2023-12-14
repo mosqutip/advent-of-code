@@ -32,7 +32,16 @@ class Runner
         // Console.WriteLine("===== DAY 10 SOLUTION =====");
         // Day10.solve();
 
-        Console.WriteLine("===== DAY 11 SOLUTION =====");
-        Day11.solve();
+        // Console.WriteLine("===== DAY 11 SOLUTION =====");
+        // Day11.solve();
+
+        // Console.WriteLine("===== DAY 12 SOLUTION =====");
+        // Day12.solve();
+
+        // Console.WriteLine("===== DAY 13 SOLUTION =====");
+        // Day13.solve();
+
+        Console.WriteLine("===== DAY 14 SOLUTION =====");
+        Day14.solve();
     }
 }
